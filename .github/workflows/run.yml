@@ -23,6 +23,5 @@ jobs:
 
     - name: Run tests
       run: |
-        cd githubaction
         pytest -v
 
