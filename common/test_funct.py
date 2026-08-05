@@ -1,4 +1,4 @@
-from test_script import add, multiply
+from funct_def import add, multiply
 
 def test_add():
     assert add(1, 2) == 3
