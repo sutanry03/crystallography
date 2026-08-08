@@ -1,4 +1,5 @@
-from funct_def import add, multiply
+import common
+from common.funct_def import add, multiply
 
 def test_add():
     assert add(1, 2) == 3
