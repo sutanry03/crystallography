@@ -23,13 +23,10 @@ class DataSamples:
         if n_th <= 2:
             return result[:n_th]
         for n in range(3, n_th + 1):
-            an = list(
+            an = sum(
                 (-1.)**float(k) * self._comb(n, k) * µ**float(k) * ms[n-k-1]
                 for k in range(n-1)
             )
-            print(an)
-            an = sum(an)
-            #117.667 - 396 + 522 - 243
             an += float((-1.)**(n-1) * (n -1)) * µ ** float(n)
             an /= sgm**float(n)
             result.append(an)
