@@ -23,6 +23,5 @@ jobs:
 
     - name: Run tests
       run: |
-        cd common/
         pytest -v
 
