@@ -24,12 +24,12 @@ class LatticeBasis:
             for i in range(3)
         )
 
-    def inverse(self) -> "LatticeBasis":
+    def inverse(self, dim: int) -> "LatticeBasis":
         return LatticeBasis(basis=tuple(
             Vect(tuple(
                 self._adjugate[j][i]/self.det * (-1.) ** float(i+j)
-                for j in range(3)
+                for j in range(dim)
             ))
-            for i in range(3)
+            for i in range(dim)
         ))
 
