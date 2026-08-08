@@ -1,7 +1,6 @@
-import common
-from common.funct_def import add, multiply
 import compileall
 import pathlib
+from common.funct_def import add, multiply
 
 def test_library_syntax():
     target_dir = pathlib.Path("./common")

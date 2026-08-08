@@ -1,13 +1,12 @@
 from dataclasses import dataclass
-from typing import Self
 
 @dataclass
 class Vect:
-    v: tuple[float, float, float]
+    v: tuple[float, ...]
 
 @dataclass
 class LatticeBasis:
-    basis: tuple[Vect, Vect, Vect]
+    basis: tuple[Vect, ...]
 
     def __post_init__(self):
         s = {0:1, 1:0, 2:0}
@@ -25,9 +24,8 @@ class LatticeBasis:
             for i in range(3)
         )
 
-    def inverse(self) -> Self:
-        # d = self._det()
-        return LatticeBasis(tuple(
+    def inverse(self) -> "LatticeBasis":
+        return LatticeBasis(basis=tuple(
             Vect(tuple(
                 self._adjugate[j][i]/self.det * (-1.) ** float(i+j)
                 for j in range(3)
