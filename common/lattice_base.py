@@ -13,7 +13,7 @@ class LatticeBasis:
         s = {0:1, 1:0, 2:0}
         l = {0:2, 1:2, 2:1}
         self._adjugate = list(
-            list
+            list(
                 self.basis[s[i]].v[s[j]] * self.basis[l[i]].v[l[j]]
                 - self.basis[l[i]].v[s[j]] * self.basis[s[i]].v[l[j]]
                 for j in range(3)

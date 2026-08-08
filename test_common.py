@@ -1,5 +1,12 @@
 import common
 from common.funct_def import add, multiply
+import compileall
+import pathlib
+
+def test_library_syntax():
+    target_dir = pathlib.Path("./common")
+    is_valid = compileall.compile_dir(target_dir, quiet=1)
+    assert is_valid
 
 def test_add():
     assert add(1, 2) == 3
