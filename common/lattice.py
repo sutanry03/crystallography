@@ -15,6 +15,7 @@ class Lattice:
     beta:  float = field(init=False)
     gamma: float = field(init=False)
     symms: int = field(init=False)
+    symm_modes: list[list[int]] = field(init=False)
     basis: tuple[
         tuple[float, float, float],
         tuple[float, float, float],
@@ -74,6 +75,8 @@ class Cubic(Lattice):
         self.beta = 90.
         self.gamma = 90.
         self.symms = 48
+        # 8種の反転 x 6種の交代
+        self.symm_modes = [list(range(8)), list(range(6)), [0]]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P", "I", "F"]
@@ -94,6 +97,8 @@ class Hexagonal(Lattice):
         self.beta = 90.
         self.gamma = 120.
         self.symms = 24
+        # 2種の反転 x 2種の交代 x 6種の特殊交代
+        self.symm_modes =[ [0,4], list(range(2)), list(range(6))]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P"]
@@ -115,7 +120,9 @@ class Tetragonal(Lattice):
         self.alpha = 90.
         self.beta = 90.
         self.gamma = 90.
-        self.symms = 24
+        self.symms = 16
+        # 8種の反転 x 2種の交代
+        self.symm_modes = [list(range(8)), list(range(2)), [0]]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P", "I"]
@@ -139,7 +146,9 @@ class Orthorhombic(Lattice):
         self.alpha = 90.
         self.beta = 90.
         self.gamma = 90.
-        self.symms = 24
+        self.symms = 8
+        # 8種の反転
+        self.symm_modes = [list(range(8)), [0], [0]]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P", "C", "I", "F"]
@@ -163,7 +172,9 @@ class Trigonal(Lattice):
         self.alpha = alpha
         self.beta = alpha
         self.gamma = alpha
-        self.symms = 24
+        self.symms = 12
+        # 2種の反転 x 2種の交代 x 3種の特殊交代
+        self.symm_modes =[ [0,4], list(range(2)), [0, 2, 4] ]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P"]
@@ -189,7 +200,9 @@ class Monoclinic(Lattice):
         self.alpha = 90.
         self.beta = beta
         self.gamma = 90.
-        self.symms = 24
+        self.symms = 4
+        # 4種の反転
+        self.symm_modes = [[0, 3, 4, 7], [0], [0]]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P", "C"]
@@ -227,6 +240,8 @@ class Triclinic(Lattice):
         self.beta = beta
         self.gamma = gamma
         self.symms = 2
+        # 2種の反転
+        self.symm_modes = [[0, 7], [0], [0]]
         self.basis = (self.A, self.B, self.C)
         self.invs = inverse(self.basis)
         self.bravais = ["P"]
