@@ -12,6 +12,10 @@ from common.lattice import (
     Triclinic,
     Lattice,
 )
+from common.symmetry import (
+    _drop_duplicates,
+    map_symmetry_of_cluster
+)
 
 def test_library_syntax():
     target_dir = pathlib.Path("./common")
@@ -133,3 +137,23 @@ def test_invalid_angle_cannot_generate_last_axis():
                 assert False
             except:
                 assert True
+
+def test_map_symmetry_of_cluster():
+    for cryst in [
+        Cubic(a=1.0),
+        Hexagonal(a=1.0,c=1.0),
+        Tetragonal(a=1.0,c=1.0),
+        Orthorhombic(a=1.0,b=1.0,c=1.0),
+        Trigonal(a=1.0,alpha=75.),
+        Monoclinic(a=1.0,b=1.0,c=1.0,beta=75.),
+        Triclinic(
+            a=1.0,b=1.0,c=1.0,
+            alpha=60.,beta=75.,gamma=120.
+        ),
+    ]:
+        c = map_symmetry_of_cluster(
+            ((0.1, 0.3, 0.4),),
+            cryst.symm_modes
+        )
+        d = _drop_duplicates(c)
+        assert len(d) == cryst.symms
