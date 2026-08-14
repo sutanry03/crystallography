@@ -157,3 +157,20 @@ def test_map_symmetry_of_cluster():
         )
         d = _drop_duplicates(c)
         assert len(d) == cryst.symms
+
+        part = 10
+        for i in range(part+1):
+            for j in range(part+1):
+                for k in range(part+1):
+                    c = map_symmetry_of_cluster(
+                        ((
+                            i/float(part),
+                            j/float(part),
+                            k/float(part)
+                        ),),
+                        cryst.symm_modes
+                    )
+                    d = _drop_duplicates(c)
+                    if cryst.symms % len(d):
+                        print(i,j,k, len(d))
+                        assert False
