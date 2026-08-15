@@ -22,7 +22,7 @@ def _set_params(
     assert upper == lower + 1
     return lower, upper, cryption_dict, decryption_dict, access_number
 
-def conv32(r: float, N: int, P: int) -> str:
+def convert(r: float, N: int, P: int) -> str:
     """ 小数部分P桁を文字化. 2^(N*l) < 10^P < 2^(N*u) """
     l, u, cd, dd, an = _set_params(N, P)
     r = round(r*10.**P,0)
@@ -32,7 +32,7 @@ def conv32(r: float, N: int, P: int) -> str:
         a += cd[b+an]
     return a[::-1]
 
-def encrypt_vector(vec: tuple[float, float, float], N: int, P: int) -> str:
+def encrypt_vector(vec: tuple[float, ...], N: int, P: int) -> str:
     """ ベクトルの文字化。小数部P桁精度, 整数部の絶対値は2^(N*u-1)未満 """
     l, u, cd, dd, an = _set_params(N, P)
     floor: int = 2**(N*u-1)
@@ -44,14 +44,14 @@ def encrypt_vector(vec: tuple[float, float, float], N: int, P: int) -> str:
         for j in range(u):
             r, b = (r//(2**N), r%(2**N))
             k0 += cd[b+an]
-        k += k0[::-1] + conv32(i - int(i), N, P)
+        k += k0[::-1] + convert(i - int(i), N, P)
     return k
 
 def decrypt_vector(
     crypted_vector: str,
     N: int,
     P: int
-) -> tuple[float, float, float]:
+) -> tuple[float, ...]:
     """ 文字化されたベクトルの複製(小数部P桁精度, 整数部の絶対値は2^(N*u-1)未満) """
     l, u, cd, dd, an = _set_params(N, P)
     decrypting = list(dd[i]-an for i in crypted_vector)
@@ -71,7 +71,7 @@ def decrypt_vector(
     return (x,y,z)
 
 def encrypt_cluster(
-    clusters: list[tuple[float, float, float]],
+    clusters: tuple[tuple[float, ...], ...],
     N: int,
     P: int
 ) -> str:
@@ -81,11 +81,11 @@ def decrypt_cluster(
     encrypted_cluster: str,
     N: int,
     P: int
-) -> list[tuple[float, float, float]]:
-    return list(decrypt_vector(i, N, P) for i in encrypted_cluster.split())
+) -> tuple[tuple[float, ...], ...]:
+    return tuple(decrypt_vector(i, N, P) for i in encrypted_cluster.split())
 
-def _drop_duplicates(inp: Iterable):
-    return list(t for t in dict.fromkeys(x for x in inp))
+def _drop_duplicates(inp: Iterable) -> tuple[Any, ...]:
+    return tuple(t for t in dict.fromkeys(x for x in inp))
 
 def get_rv_ex_sp(modes: list[list[int]]) -> list[Any]:
     rv = [
