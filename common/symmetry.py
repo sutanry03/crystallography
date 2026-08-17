@@ -131,7 +131,7 @@ def get_rv_ex_sp(modes: list[list[int]]) -> list[Any]:
 def map_symmetry_of_cluster(
     cluster: tuple[tuple[float, ...], ...],
     modes: list[list[int]]
-) -> tuple[tuple[float, ...], ...]:
+) -> tuple[tuple[tuple[float, ...], ...], ...]:
     lambdas = get_rv_ex_sp(modes)
     """ クラスター内の各点を同じ操作で写像してlistで括る。この写像クラスターlistを返却する。 """
     result = tuple(tuple(
@@ -148,3 +148,14 @@ def mod_for_vector(vec: tuple[float, ...]) -> tuple[float, ...]:
             x -= 1
         return x
     return tuple(m(x) for x in vec)
+
+def extract_identifying_cluster(
+    cluster: tuple[tuple[float, ...], ...],
+    modes: list[list[int]],
+    N: int,
+    P: int,
+) -> str:
+    return sorted(tuple(
+        encrypt_cluster(i, N, P)
+        for i in map_symmetry_of_cluster(cluster, modes)
+    ))[-1]
