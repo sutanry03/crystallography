@@ -23,5 +23,5 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest --mypy -v
+        python3 -m pytest --mypy -v
 
